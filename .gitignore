@@ -8,6 +8,7 @@ bert-base-chinese/
 bert-base-uncased/
 bert-chinese/
 .vscode/
+venv/
 *.pyc
 *.pyo
 *.pyd
