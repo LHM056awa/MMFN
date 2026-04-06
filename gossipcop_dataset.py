@@ -45,7 +45,7 @@ class gossipcop_dataset(data.Dataset):
         self.label_dict = []
         self.swin = feature_extractor
         self.preprocess = preprocess
-        self.local_path = r"E:\MMFN-master\MMFN-master\data\gossipcop"
+        self.local_path = r"E:\MMFN-master\data\gossipcop"
         # Read CSV file to populate label_dict
         if is_train:
             self.img_dir = "gossip_train"

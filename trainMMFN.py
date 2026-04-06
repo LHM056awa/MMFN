@@ -1,5 +1,40 @@
 import os
 import torch
+
+# ========== 温和 Focal Loss ==========
+class GentleFocalLoss(torch.nn.Module):
+    def __init__(self, alpha=0.7, gamma=1.5):
+        super(GentleFocalLoss, self).__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+    def forward(self, inputs, targets):
+        ce_loss = torch.nn.CrossEntropyLoss(reduction='none')(inputs, targets)
+        pt = torch.exp(-ce_loss)
+        alpha_t = torch.where(targets == 0, self.alpha, 1 - self.alpha)
+        focal_loss = alpha_t * (1 - pt) ** self.gamma * ce_loss
+        return focal_loss.mean()
+
+# ========== Focal Loss for Class Imbalance ==========
+class FocalLoss(torch.nn.Module):
+    def __init__(self, alpha=[4.0, 1.0], gamma=2.0, reduction='mean'):
+        super(FocalLoss, self).__init__()
+        self.alpha = torch.tensor(alpha).cuda()
+        self.gamma = gamma
+        self.reduction = reduction
+
+    def forward(self, inputs, targets):
+        ce_loss = torch.nn.CrossEntropyLoss(reduction='none')(inputs, targets)
+        pt = torch.exp(-ce_loss)
+        alpha_t = self.alpha[targets]
+        focal_loss = alpha_t * (1 - pt) ** self.gamma * ce_loss
+        if self.reduction == 'mean':
+            return focal_loss.mean()
+        elif self.reduction == 'sum':
+            return focal_loss.sum()
+        else:
+            return focal_loss
+
+
 import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, f1_score, \
     classification_report
@@ -9,7 +44,8 @@ from torch.utils.data import DataLoader
 from MMFN import MultiModal
 from tqdm import tqdm
 from myweibo_dataset import *
-from gossipcop_dataset import gossipcop_dataset, collate_fn
+from gossipcop_dataset import gossipcop_dataset
+from weibo_dataset import weibo_dataset, collate_fn
 from twitter_dataset import *
 
 # Set logging verbosity to warning and error levels for transformers
@@ -33,10 +69,10 @@ def train():
     # Load training and validation datasets
     # train_set = twitter_dataset(is_train=True)
     # test_set = twitter_dataset(is_train=False)
-    # train_set = weibo_dataset(is_train=True)
-    # test_set = weibo_dataset(is_train=False)
-    train_set = gossipcop_dataset(is_train=True)
-    test_set = gossipcop_dataset(is_train=False)
+    train_set = weibo_dataset(is_train=True)
+    test_set = weibo_dataset(is_train=False)
+    # train_set = gossipcop_dataset(is_train=True)
+    # test_set = gossipcop_dataset(is_train=False)
 
     # Create data loaders for training and testing
     train_loader = DataLoader(train_set, batch_size=4, shuffle=True, num_workers=0, collate_fn=collate_fn, drop_last=True)
@@ -48,7 +84,7 @@ def train():
     rumor_module.to(device)
 
     # Define the CrossEntropyLoss criterion for rumor classification
-    loss_f_rumor = torch.nn.CrossEntropyLoss(weight=torch.tensor([6.0, 1.0]).cuda())
+    loss_f_rumor = GentleFocalLoss(alpha=0.7, gamma=1.5).cuda()
 
     # Extract parameters for optimizer groups
     base_params = list(map(id, rumor_module.bert.parameters()))
@@ -57,12 +93,12 @@ def train():
     # Define the optimizer with different learning rates for different parameter groups
     optim_task = torch.optim.Adam([
         {'params': filter(lambda p: p.requires_grad and id(p) not in base_params, rumor_module.parameters())},
-        {'params': rumor_module.bert.parameters(), 'lr': 5e-6},
-        {'params': rumor_module.swin.parameters(), 'lr': 5e-6}
-    ], lr=5e-4)
+        {'params': rumor_module.bert.parameters(), 'lr': 3e-6},
+        {'params': rumor_module.swin.parameters(), 'lr': 3e-6}
+    ], lr=2e-4)
 
     # Training loop
-    for epoch in range(50):  # 假设训练最多50个epoch
+    for epoch in range(80):  # 假设训练最多50个epoch
         print("start to train")
         rumor_module.train()
         corrects_pre_rumor = 0
@@ -92,6 +128,8 @@ def train():
             optim_task.step()
 
             # Calculate accuracy and update counters
+                        # 动态阈值调整
+            probs = torch.softmax(pre_rumor, dim=1)
             pre_label_rumor = pre_rumor.argmax(1)
             corrects_pre_rumor += pre_label_rumor.eq(label.view_as(pre_label_rumor)).sum().item()
             loss_total += loss_rumor.item() * input_ids.shape[0]
@@ -141,7 +179,7 @@ def to_var(x):
 def test(rumor_module, test_loader):
     rumor_module.eval()
 
-    loss_f_rumor = torch.nn.CrossEntropyLoss(weight=torch.tensor([6.0, 1.0]).cuda())
+    loss_f_rumor = GentleFocalLoss(alpha=0.7, gamma=1.5).cuda()
 
     rumor_count = 0
     loss_total = 0
@@ -162,6 +200,8 @@ def test(rumor_module, test_loader):
             # Forward pass through the MultiModal model
             pre_rumor = rumor_module(input_ids, attention_mask, token_type_ids, image, text_clip, image_clip)
             loss_rumor = loss_f_rumor(pre_rumor, label)
+                        # 动态阈值调整
+            probs = torch.softmax(pre_rumor, dim=1)
             pre_label_rumor = pre_rumor.argmax(1)
 
             loss_total += loss_rumor.item() * input_ids.shape[0]

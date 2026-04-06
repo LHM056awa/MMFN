@@ -17,7 +17,7 @@ torch.cuda.manual_seed(manualseed)
 cudnn.deterministic = True
 
 # Load BERT model and configure its output
-model_name = './bert-base-chinese'
+model_name = r'E:\MMFN-master\bert-base-chinese'
 config = BertConfig.from_pretrained(model_name, num_labels=2)
 config.output_hidden_states = False
 
@@ -246,7 +246,7 @@ class MultiModal(nn.Module):
         self.i_projection_net = nn.Linear(1024, 512)  # Linear projection for text
 
         # Load the Swin Transformer model for image processing
-        self.swin = SwinModel.from_pretrained("./swin-base-patch4-window7-224").cuda()
+        self.swin = SwinModel.from_pretrained(r"E:\MMFN-master\swin-base-patch4-window7-224").cuda()
         for param in self.swin.parameters():
             param.requires_grad = True
 
