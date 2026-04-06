@@ -11,7 +11,7 @@ from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
 
 pandas.set_option('display.max_columns', None)
-path = '/home/yutao/MMFN/dataset/weibo'
+path = '/home/yutao/DWMF/dataset/weibo'
 # print path to check if it is correct
 # print(os.getcwd())
 # Read the CSV file

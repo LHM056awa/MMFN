@@ -20,7 +20,7 @@ Other datasets can be obtained by contacting the original author.
 
 The py file with the suffix of preprocess indicates the preprocessing of the dataset, and the py file with the suffix of dataset indicates the dataset class.
 
-**train.py** is the training code. Running this code can get the reproducible results. Modifying the **forward** function in **class MMFN** can get different ablation experiment results.
+**train.py** is the training code. Running this code can get the reproducible results. Modifying the **forward** function in **class DWMF** can get different ablation experiment results.
 
 ## Result
 

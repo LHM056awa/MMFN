@@ -7,7 +7,7 @@ from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
 
 pandas.set_option('display.max_columns', None)
-path = '/home/yutao/MMFN/dataset/twitter_dataset'
+path = '/home/yutao/DWMF/dataset/twitter_dataset'
 # print path to check if it is correct
 print(os.getcwd())
 # Read the CSV file

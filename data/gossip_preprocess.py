@@ -5,7 +5,7 @@ from pandas import json_normalize
 import json
 
 pandas.set_option('display.max_columns', None)
-path = '/home/yutao/MMFN/dataset'
+path = '/home/yutao/DWMF/dataset'
 # print path to check if it is correct
 print(os.getcwd())
 # Read the CSV file

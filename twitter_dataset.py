@@ -50,7 +50,7 @@ class twitter_dataset(data.Dataset):
         self.label_dict = []
         self.swin = feature_extractor
         self.preprocess = preprocess
-        self.local_path = '/home/yutao/MMFN/dataset/twitter_dataset'
+        self.local_path = '/home/yutao/DWMF/dataset/twitter_dataset'
         # Read CSV file to populate label_dict
         gc = pandas.read_csv(self.local_path + '/{}_tweets_preprocess.csv'.format('train' if is_train else 'test'))
         # gc = gc[:100]

@@ -78,7 +78,7 @@ def read_img(path, mode=cv2.IMREAD_COLOR):
     cvim = cv2.cvtColor(im_np, cv2.COLOR_RGB2BGR)  #
     # print(cvim.shape)
     # img = cv2.imread(path, mode)
-    # if path=='/home/yutao/MMFN/dataset/image/top_img/gossipcop-881720_top_img.png':
+    # if path=='/home/yutao/DWMF/dataset/image/top_img/gossipcop-881720_top_img.png':
     #     img = img.astype(np.float32) / 255.
     img = cvim.astype(np.float32) / 255.
     # if img.ndim == 2:
