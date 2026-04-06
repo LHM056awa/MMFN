@@ -10,7 +10,7 @@ class MultiModal(nn.Module):
         # 文本编码器
         self.bert = BertModel.from_pretrained('./bert-base-chinese')
         # 图像编码器
-        self.swin = SwinModel.from_pretrained("C:/Users/yuki3/Desktop/MMFN_yyt-master/swin-base-patch4-window7-224")
+        self.swin = SwinModel.from_pretrained("C:/Users/yuki3/Desktop/DWMF_yyt-master/swin-base-patch4-window7-224")
         # 将图像特征从 1024 映射到 768
         self.image_proj = nn.Linear(1024, 768)
 

@@ -1,4 +1,4 @@
-# MMFN-fake-news-detection"# MMFN" 
+# DWMF-fake-news-detection"# DWMF" 
 the implement for "Multi-modal Fake News Detection on Social Media via Multi-grained Information Fusion" by PyTorch.
 
 Enviroment requirements are as follows:
@@ -15,7 +15,7 @@ Other datasets can be obtained by contacting the original author.
 
 The py file with the suffix of preprocess indicates the preprocessing of the dataset, and the py file with the suffix of dataset indicates the dataset class.
 
-**trainMMFN.py** is the training code. Running this code can get the reproducible results. Modifying the **forward** function in **class MMFN** can get different ablation experiment results.
+**trainDWMF.py** is the training code. Running this code can get the reproducible results. Modifying the **forward** function in **class DWMF** can get different ablation experiment results.
 # Result
 The overall expriments as follows:
 ![Overall](整体比较.png)

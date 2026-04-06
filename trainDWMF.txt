@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, r
 from transformers import logging
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from MMFN import MultiModal
+from DWMF import MultiModal
 from tqdm import tqdm
 from myweibo_dataset import *
 from gossipcop_dataset import *

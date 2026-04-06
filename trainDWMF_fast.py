@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Subset
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
-from MMFN import MultiModal
+from DWMF import MultiModal
 from myweibo_dataset import WeiboDataset, collate_fn
 
 # 设置设备

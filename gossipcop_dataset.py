@@ -20,7 +20,7 @@ for param in clipmodel.parameters():
     param.requires_grad = False
 
 # Load a feature extractor from the transformers library
-feature_extractor = AutoFeatureExtractor.from_pretrained("C:/Users/yuki3/Desktop/MMFN_yyt-master/swin-base-patch4-window7-224")
+feature_extractor = AutoFeatureExtractor.from_pretrained("C:/Users/yuki3/Desktop/DWMF_yyt-master/swin-base-patch4-window7-224")
 token = BertTokenizer.from_pretrained('bert-base-chinese')
 
 
@@ -49,7 +49,7 @@ class gossipcop_dataset(data.Dataset):
         self.label_dict = []
         self.swin = feature_extractor
         self.preprocess = preprocess
-        self.local_path = '/home/yutao/MMFN/dataset/gossipcop'
+        self.local_path = '/home/yutao/DWMF/dataset/gossipcop'
         # Read CSV file to populate label_dict
         gc = pandas.read_csv(self.local_path + '/{}_gossipcop.csv'.format('train' if is_train else 'test'))
         # gc = gc[:1000]

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from sklearn.metrics import accuracy_score
-from MMFN import MultiModal
+from DWMF import MultiModal
 from myweibo_dataset import WeiboDataset, collate_fn
 
 device = torch.device("cpu")
