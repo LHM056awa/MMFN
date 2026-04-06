@@ -4,8 +4,8 @@ the implement for "Multi-modal Fake News Detection on Social Media via Multi-gra
 Enviroment requirements are as follows:
 | enviroment      | version |
 | ----------- | ----------- |
-| pytorch      | 1.13.1       |
-| cuda   | 12.2        |
+| pytorch      | 2.8.0       |
+| cuda   | 12.8        |
 | python   | 3.9.19        |
 # About
 The dataset includes three datasets: **weibo, twitter, gossipcop, and gossipcop-LLM**. According to the original author's intention, only the dataset link of **gossipcop-LLM** is given here:

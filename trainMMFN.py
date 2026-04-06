@@ -44,7 +44,8 @@ from torch.utils.data import DataLoader
 from MMFN import MultiModal
 from tqdm import tqdm
 from myweibo_dataset import *
-from gossipcop_dataset import gossipcop_dataset, collate_fn
+from gossipcop_dataset import gossipcop_dataset
+from weibo_dataset import weibo_dataset, collate_fn
 from twitter_dataset import *
 
 # Set logging verbosity to warning and error levels for transformers
@@ -68,10 +69,10 @@ def train():
     # Load training and validation datasets
     # train_set = twitter_dataset(is_train=True)
     # test_set = twitter_dataset(is_train=False)
-    # train_set = weibo_dataset(is_train=True)
-    # test_set = weibo_dataset(is_train=False)
-    train_set = gossipcop_dataset(is_train=True)
-    test_set = gossipcop_dataset(is_train=False)
+    train_set = weibo_dataset(is_train=True)
+    test_set = weibo_dataset(is_train=False)
+    # train_set = gossipcop_dataset(is_train=True)
+    # test_set = gossipcop_dataset(is_train=False)
 
     # Create data loaders for training and testing
     train_loader = DataLoader(train_set, batch_size=4, shuffle=True, num_workers=0, collate_fn=collate_fn, drop_last=True)
@@ -94,10 +95,10 @@ def train():
         {'params': filter(lambda p: p.requires_grad and id(p) not in base_params, rumor_module.parameters())},
         {'params': rumor_module.bert.parameters(), 'lr': 3e-6},
         {'params': rumor_module.swin.parameters(), 'lr': 3e-6}
-    ], lr=5e-4)
+    ], lr=2e-4)
 
     # Training loop
-    for epoch in range(50):  # 假设训练最多50个epoch
+    for epoch in range(80):  # 假设训练最多50个epoch
         print("start to train")
         rumor_module.train()
         corrects_pre_rumor = 0
