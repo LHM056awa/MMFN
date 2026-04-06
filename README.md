@@ -6,7 +6,7 @@ Enviroment requirements are as follows:
 | ----------- | ----------- |
 | pytorch      | 2.8.0       |
 | cuda   | 12.8        |
-| python   | 3.9.19        |
+| python   | 3.12.13        |
 # About
 The dataset includes three datasets: **weibo, twitter, gossipcop, and gossipcop-LLM**. According to the original author's intention, only the dataset link of **gossipcop-LLM** is given here:
 https://github.com/junyachen/Data-examples
